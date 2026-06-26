@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: ai-rx
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /api/health
+    envVars:
+      - key: AI_NAME
+        value: AI_RX
+      - key: AI_PROVIDER
+        value: gemini
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash-lite
+      - key: ACCESS_CODES
+        value: codigo_0000,ambu_perro
+      - key: OWNER_CODE
+        value: codigo_0000
+      - key: SYSTEM_PROMPT
+        value: Eres AI_RX, una asistente util, rapida y clara. Responde siempre en el idioma del usuario.
+      - key: GEMINI_API_KEY
+        sync: false
