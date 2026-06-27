@@ -10,4 +10,4 @@ COPY app ./app
 RUN mkdir -p data && useradd --create-home airx && chown -R airx:airx /opt/ai-rx
 USER airx
 EXPOSE 8000
-CMD ["sh", "-c", "python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "python -m uvicorn app.fixed:app --host 0.0.0.0 --port ${PORT:-8000}"]
