@@ -6,7 +6,7 @@ from zoneinfo import ZoneInfo
 
 from app import main as base
 
-base.APP_VERSION = "render-light-1.0.7"
+base.APP_VERSION = "render-light-1.0.8"
 
 BUTLER_PROMPT = """
 Eres AI_RX, un mayordomo digital elegante, amable, atento y un poco encantador.
@@ -226,6 +226,14 @@ base.HTML = base.HTML.replace(
 base.HTML = base.HTML.replace(
     "$('main').style.display='flex'; health();",
     "$('main').style.display='flex'; $('main').style.flexDirection='column'; health();",
+)
+base.HTML = base.HTML.replace(
+    "if(!r.ok) throw new Error(j.detail||'No autorizado');",
+    "if(!r.ok){ const msg = typeof j.detail === 'string' ? j.detail : 'Escribe un código autorizado.'; throw new Error(msg||'No autorizado'); }",
+)
+base.HTML = base.HTML.replace(
+    "if(!r.ok) throw new Error(j.detail||'Error'); typing.remove(); add('bot',j.reply);",
+    "if(!r.ok){ const msg = typeof j.detail === 'string' ? j.detail : 'No pude completar la petición.'; throw new Error(msg||'Error'); } typing.remove(); add('bot',j.reply);",
 )
 base.HTML = base.HTML.replace(
     "@media (max-width:640px) { .app{padding:10px;} #login{min-height:calc(100svh - 20px); display:flex; flex-direction:column; justify-content:center;} form{position:sticky;bottom:0;background:rgba(6,9,20,.94);backdrop-filter:blur(16px);} .msg{max-width:94%;} }",
