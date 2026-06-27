@@ -1,3 +1,4 @@
+import json
 import re
 import sqlite3
 from datetime import datetime, timedelta
@@ -5,7 +6,7 @@ from zoneinfo import ZoneInfo
 
 from app import main as base
 
-base.APP_VERSION = "render-light-1.0.6"
+base.APP_VERSION = "render-light-1.0.7"
 
 BUTLER_PROMPT = """
 Eres AI_RX, un mayordomo digital elegante, amable, atento y un poco encantador.
@@ -155,9 +156,10 @@ async def ai_rx_cloud_guard(request, call_next):
         return base.JSONResponse({"detail": "Sesión expirada. Toca Salir y entra otra vez, señor."}, status_code=401)
 
     try:
-        payload = await request.json()
+        raw_body = await request.body()
+        payload = json.loads(raw_body.decode("utf-8") if raw_body else "{}")
     except Exception:
-        return base.JSONResponse({"detail": "No pude leer el mensaje."}, status_code=400)
+        return base.JSONResponse({"detail": "No pude leer el mensaje JSON."}, status_code=400)
 
     message = str(payload.get("message", "")).strip()
     history = payload.get("history") if isinstance(payload.get("history"), list) else []
