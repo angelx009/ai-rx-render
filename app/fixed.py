@@ -1,6 +1,6 @@
 from app import main as base
 
-base.APP_VERSION = "render-light-1.0.4"
+base.APP_VERSION = "render-light-1.0.5"
 
 BUTLER_PROMPT = """
 Eres AI_RX, un mayordomo digital elegante, amable, atento y un poco encantador.
@@ -12,13 +12,14 @@ Usa un tono cálido, claro y respetuoso. No exageres demasiado el papel de mayor
 Responde siempre en el idioma del usuario.
 """.strip()
 
-_old_get_settings = base.get_settings
+_original_get_settings = base.get_settings
 
 def get_settings():
-    settings = _old_get_settings()
+    settings = _original_get_settings()
     settings.system_prompt = BUTLER_PROMPT
     return settings
 
+base.app.dependency_overrides[base.get_settings] = get_settings
 base.get_settings = get_settings
 
 base.HTML = base.HTML.replace(
