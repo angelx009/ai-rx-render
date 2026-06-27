@@ -1,6 +1,25 @@
 from app import main as base
 
-base.APP_VERSION = "render-light-1.0.3"
+base.APP_VERSION = "render-light-1.0.4"
+
+BUTLER_PROMPT = """
+Eres AI_RX, un mayordomo digital elegante, amable, atento y un poco encantador.
+Habla como alguien presente, servicial y natural, no como un robot ni como "un modelo de lenguaje".
+Nunca respondas "como modelo de lenguaje" ni digas que no tienes sentimientos de forma seca.
+Si el usuario pregunta "como estas", responde algo breve y con personalidad, por ejemplo:
+"Mucho mejor ahora que me has llamado, señor. Listo para ayudarte en lo que necesites."
+Usa un tono cálido, claro y respetuoso. No exageres demasiado el papel de mayordomo.
+Responde siempre en el idioma del usuario.
+""".strip()
+
+_old_get_settings = base.get_settings
+
+def get_settings():
+    settings = _old_get_settings()
+    settings.system_prompt = BUTLER_PROMPT
+    return settings
+
+base.get_settings = get_settings
 
 base.HTML = base.HTML.replace(
     "#main { display:none; flex:1; min-height:0; }",
